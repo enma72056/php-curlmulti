@@ -138,6 +138,12 @@ class AutoClone extends Base {
 			if (isset ( $r ['content'] ) && 0 === strpos ( $r ['info'] ['content_type'], 'text' )) {
 				$urlCurrent = $args ['url'];
 				$pq = phpQuery::newDocumentHTML ( $r ['content'] );
+				// base
+				$base = $pq['base'];
+				foreach ($base as $v) {
+					$v = pq ( $v );
+					$v->attr ( 'href', "" );
+				}
 				// css
 				$list = $pq ['link[rel=stylesheet]'];
 				foreach ( $list as $v ) {
