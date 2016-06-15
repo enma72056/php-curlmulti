@@ -463,10 +463,11 @@ class Base {
 		$urlDir = $this->urlDir ( $urlCurrent );
 		if (0 === strpos ( $uri, '/' )) {
 			$len = strlen ( parse_url ( $urlDir, PHP_URL_PATH ) );
-			return substr ( $urlDir, 0, 0 - $len ) . $uri;
+			$url = substr ( $urlDir, 0, 0 - $len ) . $uri;
 		} else {
-			return $urlDir . $uri;
+			$url = $urlDir . $uri;
 		}
+		return $url;
 	}
 
 	/**
