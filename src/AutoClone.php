@@ -163,6 +163,7 @@ class AutoClone extends Base {
 				if ($this->download ['pic'] ['enable']) {
 					foreach ( $pic as $v ) {
 						$v = pq ( $v );
+						if( false !== strpos( $v->attr ( 'src' ), 'data:' ) ) continue;
 						$url = $this->uri2url ( $v->attr ( 'src' ), $urlCurrent );
 						$v->attr ( 'src', $this->cloneUrl2uri ( $url, $urlCurrent ) );
 						$urlDownload [$url] = array ();
@@ -170,6 +171,7 @@ class AutoClone extends Base {
 				} else {
 					foreach ( $pic as $v ) {
 						$v = pq ( $v );
+						if( false !== strpos( $v->attr ( 'src' ), 'data:' ) ) continue;
 						$v->attr ( 'src', $this->uri2url ( $v->attr ( 'src' ), $urlCurrent ) );
 					}
 				}
@@ -237,12 +239,13 @@ class AutoClone extends Base {
 						$uri = array_merge ( $uri, $matches [1] );
 					}
 					// url in css
-					preg_match_all ( '/:\s*url\((\'|")?(.+?)\\1?\)/i', $content, $matches );
+					preg_match_all ( '/:\s*url\((\'|")?([^:]+?)\\1?\)/i', $content, $matches );
 					if (! empty ( $matches [2] )) {
 						$uri = array_merge ( $uri, $matches [2] );
 					}
 					foreach ( $uri as $v ) {
-						$urlDownload [$this->urlDir ( $r ['info'] ['url'] ) . $v] = array (
+						$url = $this->uri2url ( $v, $r ['info'] ['url'] );
+						$urlDownload [$url] = array (
 								'type' => 'css'
 						);
 					}
