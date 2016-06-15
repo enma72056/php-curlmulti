@@ -464,10 +464,19 @@ class Base {
 		if (0 === strpos ( $uri, '/' )) {
 			$len = strlen ( parse_url ( $urlDir, PHP_URL_PATH ) );
 			$url = substr ( $urlDir, 0, 0 - $len ) . $uri;
+		} elseif (0 === strpos ( $uri, '../' )) {
+			$url = $this->parentPath($urlDir) . substr($uri, 3);
 		} else {
 			$url = $urlDir . $uri;
 		}
 		return $url;
+	}
+
+	function parentPath($path) {
+		$path_arr = explode('/', rtrim($path, '/'));
+		array_pop($path_arr);
+		$parent_path =  rtrim(implode('/', $path_arr), '/') . '/';
+		return $parent_path;
 	}
 
 	/**
