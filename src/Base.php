@@ -417,7 +417,12 @@ class Base {
 		}
 		if (isset ( $in )) {
 			$old = error_reporting ( error_reporting () & ~ E_NOTICE );
-			$html = call_user_func ( $func, $in, $out . '//IGNORE', $html );
+			if('iconv' == $func) {
+				$html = call_user_func ( $func, $in, $out . '//IGNORE', $html );
+			} else {
+				$html = call_user_func ( $func, $html, $out, $in );
+			}
+
 			error_reporting ( $old );
 			$html = preg_replace ( $pattern, "\\1$out\\4", $html, 1 );
 		}
