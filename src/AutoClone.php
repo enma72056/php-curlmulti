@@ -188,6 +188,9 @@ class AutoClone extends Base {
 				foreach ( $a as $v ) {
 					$v = pq ( $v );
 					$href = $v->attr ( 'href' );
+					if (strtolower ( substr ( ltrim ( $href ), 0, 7 ) ) == 'mailto:') {
+						continue;
+					}
 					if (strtolower ( substr ( ltrim ( $href ), 0, 11 ) ) == 'javascript:') {
 						continue;
 					}
