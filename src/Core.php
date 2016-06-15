@@ -27,6 +27,8 @@ class Core {
 	const TASK_FAIL = 0x06;
 	// tryed times
 	const TASK_TRYED = 0x07;
+	// download file
+	const TASK_DOWNLOAD = 0x08;
 
 	// global max thread num
 	public $maxThread = 10;
@@ -206,18 +208,13 @@ class Core {
 		$task [self::TASK_ITEM_ARGS] = array (
 				$item ['args']
 		);
-		$fp = null;
-		if (! empty($item['file'])) {
-			$fp = fopen ( $item['file'], 'w' );
-			$item['opt'][CURLOPT_FILE] = $fp;
-			$item['opt'][CURLOPT_HEADER] = false;
-		}
 		$task [self::TASK_ITEM_OPT] = $item ['opt'];
 		$task [self::TASK_ITEM_CTL] = $item ['ctl'];
 		$task [self::TASK_PROCESS] = $process;
 		$task [self::TASK_FAIL] = $fail;
 		$task [self::TASK_TRYED] = 0;
 		$task [self::TASK_CH] = null;
+		$task [self::TASK_DOWNLOAD] = empty($item['file']) ? null : $item['file'];
 		// uniq
 		if ($this->taskOverride) {
 			foreach ( array (
@@ -303,7 +300,9 @@ class Core {
 				if ($curlInfo ['result'] == CURLE_OK) {
 					$userRes = $this->process ( $task, $param );
 					if (isset ( $task [self::TASK_ITEM_OPT] [CURLOPT_FILE] )) {
-						fclose ( $task [self::TASK_ITEM_OPT] [CURLOPT_FILE] );
+						if( is_resource($task [self::TASK_ITEM_OPT] [CURLOPT_FILE]) ) {
+							fclose ( $task [self::TASK_ITEM_OPT] [CURLOPT_FILE] );
+						}
 					}
 				}
 				// error handle
@@ -691,6 +690,13 @@ class Core {
 		$opt = $this->opt;
 		foreach ( $task [self::TASK_ITEM_OPT] as $k => $v ) {
 			$opt [$k] = $v;
+		}
+		if (! empty($task [self::TASK_DOWNLOAD])) {
+			$fp = fopen ( $task [self::TASK_DOWNLOAD], 'wb' );
+			if(is_resource( $fp )) {
+				$opt[CURLOPT_FILE] = $fp;
+				$opt[CURLOPT_HEADER] = false;
+			}
 		}
 		curl_setopt_array ( $task [self::TASK_CH], $opt );
 		$task [self::TASK_ITEM_OPT] = $opt;
