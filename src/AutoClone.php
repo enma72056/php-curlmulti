@@ -139,7 +139,7 @@ class AutoClone extends Base {
 				$urlCurrent = $args ['url'];
 				$pq = phpQuery::newDocumentHTML ( $r ['content'] );
 				// css
-				$list = $pq ['link[rel$=stylesheet]'];
+				$list = $pq ['link[rel=stylesheet]'];
 				foreach ( $list as $v ) {
 					$v = pq ( $v );
 					$url = $this->uri2url ( $v->attr ( 'href' ), $urlCurrent );
