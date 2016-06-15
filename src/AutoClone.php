@@ -383,6 +383,7 @@ class AutoClone extends Base {
 			}
 			$path .= $path1;
 		}
+		if (empty($path)) $path = 'index.html';
 		return $path;
 	}
 
