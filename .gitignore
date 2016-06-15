@@ -4,3 +4,7 @@
 /.project
 /vendor/*
 /composer.lock
+/.idea
+/demo/base/cache
+/demo/base/static
+
