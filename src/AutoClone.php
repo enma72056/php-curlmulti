@@ -436,11 +436,13 @@ class AutoClone extends Base {
 			$parse ['path'] = '';
 		}
 		$ext = "";
-		if('/' != substr( $parse ['path'], -1 )) {
-			$ext = pathinfo ( $parse ['path'], PATHINFO_EXTENSION );
-		}
-		if (empty ( $ext )) {
+		if('/' == substr( $parse ['path'], -1 )) {
 			$parse ['path'] = rtrim ( $parse ['path'], '/' ) . '/index.html';
+
+		}
+		$ext = pathinfo ( $parse ['path'], PATHINFO_EXTENSION );
+		if (empty ( $ext )) {
+			$parse ['path'] = rtrim ( $parse ['path'], '/' ) . '.html';
 		}
 		$port = '';
 		if (isset ( $parse ['port'] )) {
