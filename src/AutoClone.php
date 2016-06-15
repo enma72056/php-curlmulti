@@ -397,10 +397,18 @@ class AutoClone extends Base {
 		if ($this->isWin) {
 			$dir = mb_convert_encoding ( $dir, 'gbk', 'utf-8' );
 		}
-		if (! file_exists ( $dir )) {
-			mkdir ( $dir, 0755, true );
+		if (! is_dir ( $dir )) {
+			if(true !== @mkdir ( $dir, 0755, true )) {
+				if (is_dir($dir)) {
+					// The directory was created by a concurrent process, so do nothing, keep calm and carry on
+				} else {
+					// There is another problem, we manage it (you could manage it with exceptions as well)
+					$error = error_get_last();
+					trigger_error($error['message'], E_USER_WARNING);
+				}
+			}
 		}
-		if (file_exists ( $file )) {
+		if (is_file ( $file )) {
 			$mtime = filemtime ( $file );
 			if ($mtime > $this->startTime || ! $this->overwrite) {
 				$file = null;
