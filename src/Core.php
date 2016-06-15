@@ -206,6 +206,12 @@ class Core {
 		$task [self::TASK_ITEM_ARGS] = array (
 				$item ['args']
 		);
+		$fp = null;
+		if (! empty($item['file'])) {
+			$fp = fopen ( $item['file'], 'w' );
+			$item['opt'][CURLOPT_FILE] = $fp;
+			$item['opt'][CURLOPT_HEADER] = false;
+		}
 		$task [self::TASK_ITEM_OPT] = $item ['opt'];
 		$task [self::TASK_ITEM_CTL] = $item ['ctl'];
 		$task [self::TASK_PROCESS] = $process;
