@@ -451,6 +451,9 @@ class Base {
 		if ($this->isUrl ( $uri )) {
 			return $uri;
 		}
+		if(0 === strpos ( $uri, '//')) {
+			return 'http://' . substr($uri, 2);
+		}
 		if (! $this->isUrl ( $urlCurrent )) {
 			throw new Exception ( 'url is invalid, url=' . $urlCurrent );
 		}
