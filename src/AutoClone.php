@@ -149,7 +149,7 @@ class AutoClone extends Base {
 					);
 				}
 				// script
-				$script = $pq ['script[type$=script]'];
+				$script = $pq ['script'];
 				foreach ( $script as $v ) {
 					$v = pq ( $v );
 					if (null != $v->attr ( 'src' )) {
