@@ -448,6 +448,7 @@ class AutoClone extends Base {
 		if (isset ( $parse ['port'] )) {
 			$port = '_' . $port;
 		}
-		return $parse ['scheme'] . '_' . $parse ['host'] . $port . $parse ['path'];
+		$path = $parse ['scheme'] . '_' . $parse ['host'] . $port . $parse ['path'];
+		return $path;
 	}
 }
