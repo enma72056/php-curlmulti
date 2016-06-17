@@ -2,6 +2,8 @@
 
 namespace Ares333\CurlMulti;
 
+use Psr\Log\LoggerInterface;
+
 /**
  * Chrome Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.47 Safari/536.11
  * IE6 Mozilla/5.0 (Windows NT 6.1; rv:9.0.1) Gecko/20100101 Firefox/9.0.1
@@ -29,6 +31,8 @@ class Core {
 	const TASK_TRYED = 0x07;
 	// download file
 	const TASK_DOWNLOAD = 0x08;
+
+	private $logger = null;
 
 	// global max thread num
 	public $maxThread = 10;
@@ -701,5 +705,16 @@ class Core {
 		curl_setopt_array ( $task [self::TASK_CH], $opt );
 		$task [self::TASK_ITEM_OPT] = $opt;
 		return $task;
+	}
+
+	public function setLogger(LoggerInterface $logger) {
+		$this->logger = $logger;
+	}
+
+	public function getLogger() {
+		if( ! isset($this->logger) ) {
+			user_error("Logger is not setted");
+		}
+		return $this->logger;
 	}
 }
